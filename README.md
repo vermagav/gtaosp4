@@ -1,4 +1,4 @@
-gtaosp4
-=======
+CS 6210: Advanced Operating Systems
+===================================
 
-CS 6210: Recoverable Virtual Memory
+Project 4: Recoverable Virtual Memory
