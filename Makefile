@@ -1,16 +1,14 @@
-#### RVM Library Makefile
-
 CC = gcc
 RM = -rm -rf
 AR = ar
 CFLAGS = -Wall
-targets = librvm.a objects tests
+targets = librvm.a objects
 
 all: $(targets)
 
 clean:
 	$(RM) *.o $(targets) 
-	$(RM) basic abort multi truncate multi-abort
+	
 cleanall: clean
 	rm -rf rvm_segments*
 	
@@ -20,10 +18,3 @@ objects: rvm.c
 librvm.a: objects
 	$(AR) rcs $@ *.o
 	$(RM) *.o
-
-tests: librvm.a
-	gcc -o basic basic.c librvm.a `pkg-config --libs --cflags glib-2.0`
-	gcc -o abort abort.c librvm.a `pkg-config --libs --cflags glib-2.0`
-	gcc -o multi multi.c librvm.a `pkg-config --libs --cflags glib-2.0`   
-	gcc -o truncate truncate.c librvm.a `pkg-config --libs --cflags glib-2.0`
-	gcc -o multi-abort multi-abort.c librvm.a `pkg-config --libs --cflags glib-2.0`
