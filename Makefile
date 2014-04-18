@@ -2,7 +2,7 @@ CC = gcc
 RM = -rm -rf
 AR = ar
 CFLAGS = -Wall
-targets = librvm.a objects
+targets = clean librvm.a objects
 
 all: $(targets)
 
@@ -17,4 +17,3 @@ objects: rvm.c
 
 librvm.a: objects
 	$(AR) rcs $@ *.o
-	$(RM) *.o

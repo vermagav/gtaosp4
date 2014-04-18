@@ -291,7 +291,8 @@ trans_t rvm_begin_trans(rvm_t rvm, int numsegs, void **segbases) {
     trans_info_t* info = (trans_info_t*)malloc(sizeof(trans_info_t));
     info->trans_seg_list = NULL;
     info->old_value_items = NULL;
-    for(int i = 0; i < numsegs; i++) {
+    int i;
+    for(i = 0; i < numsegs; i++) {
         // Check if the segment is in our global list
         seg_t* segment = utility_find_segment(segbases[i]);
         if(segment == NULL) {
@@ -359,7 +360,8 @@ void rvm_commit_trans(trans_t tid) {
     file_log = fopen(directory_path, "a");
     
     // Write to log file
-    for(GList* iterator = new_segment_list; iterator; iterator = iterator -> next) {
+    GList* iterator = NULL;
+    for(iterator = new_segment_list; iterator; iterator = iterator -> next) {
         segment = (seg_t*)iterator->data;
         // Segment name and size with ~ as a delimiter, with newline at the end
         fprintf(file_log, "%s~%d~", segment->name, segment->size);
@@ -374,8 +376,10 @@ void rvm_commit_trans(trans_t tid) {
 void rvm_abort_trans(trans_t tid) {
     // Yet again, we start by looking up the id in our global hashtable
     trans_info_t* info = g_hash_table_lookup(GLOBAL_transaction_hashtable, &tid);
+    
     // Traverse backwards and write
-    for(GList* iterator = g_list_last(info->old_value_items); iterator != NULL; iterator = g_list_previous(iterator)) {
+    GList* iterator = NULL;
+    for(iterator = g_list_last(info->old_value_items); iterator != NULL; iterator = g_list_previous(iterator)) {
         trans_item_t* item = (trans_item_t*)iterator->data;
         seg_t* segment = item->seg;
         fwrite(segment->mem, segment->size, 1, stderr /* TODO: insert approp message to be added to stderr */);

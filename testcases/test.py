@@ -3,6 +3,9 @@ import glob
 
 # copy the library file to the directory
 os.system("cp ../librvm.a .")
+os.system("cp ../rvm.h .")
+os.system("cp ../rvm_internal.h .")
+
 # compilation
 for files in  glob.glob("*.c"):
 	outputF = str(files) + ".o"

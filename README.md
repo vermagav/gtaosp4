@@ -8,7 +8,8 @@ How to build the library and run tests?
 
 1. Run python build.py
 2. Put all the test(.c) files in the testing directory
-3. Run python test.py
+3. Run cd testcases
+4. Run python test.py
 
 Alternatively,
 
@@ -33,3 +34,6 @@ What goes in them? How do the files get cleaned up, so that they do not expand i
 
 There are two files stored: the transaction.log, which stores the actual transactions and segments in the format shown, and .seg files in the directory of rvm_init, that contains the raw bytes form memory.
 The RVM Log gets cleaned up in two ways. First, when a segment is mapped, we consume all the modifications from the segment from the log file, and secondly from the explicit call to truncate the log using rvm_truncate_log.
+
+
+Note: We have provided the rvm.c file instead of rvm.cpp because of linking issues which we couldnt resolve. Hence, we have provided the script to run the testcases just in case the TAs have any problem with executing them.
