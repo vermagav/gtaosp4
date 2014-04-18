@@ -1,24 +1,29 @@
 #### RVM Library Makefile
 
-CFLAGS  = -Wall -g -I.
-LFLAGS  =
-CC      = g++
-RM      = /bin/rm -rf
-AR      = ar rc
-RANLIB  = ranlib
+CC = gcc
+RM = -rm -rf
+AR = ar
+CFLAGS = -Wall
+targets = librvm.a objects tests
 
-LIBRARY = librvm.a
-
-LIB_SRC = rvm.cpp
-
-LIB_OBJ = $(patsubst %.cpp,%.o,$(LIB_SRC))
-
-%.o: %.cpp
-	$(CC) -c $(CFLAGS) $< -o $@
-
-$(LIBRARY): $(LIB_OBJ)
-	$(AR) $(LIBRARY) $(LIB_OBJ)
-	$(RANLIB) $(LIBRARY)
+all: $(targets)
 
 clean:
-	$(RM) $(LIBRARY) $(LIB_OBJ)
+	$(RM) *.o $(targets) 
+	$(RM) basic abort multi truncate multi-abort
+cleanall: clean
+	rm -rf rvm_segments*
+	
+objects: rvm.c 
+	gcc -g -c rvm.c `pkg-config --cflags --libs glib-2.0`
+
+librvm.a: objects
+	$(AR) rcs $@ *.o
+	$(RM) *.o
+
+tests: librvm.a
+	gcc -o basic basic.c librvm.a `pkg-config --libs --cflags glib-2.0`
+	gcc -o abort abort.c librvm.a `pkg-config --libs --cflags glib-2.0`
+	gcc -o multi multi.c librvm.a `pkg-config --libs --cflags glib-2.0`   
+	gcc -o truncate truncate.c librvm.a `pkg-config --libs --cflags glib-2.0`
+	gcc -o multi-abort multi-abort.c librvm.a `pkg-config --libs --cflags glib-2.0`
