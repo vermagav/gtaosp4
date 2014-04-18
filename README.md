@@ -25,7 +25,11 @@ We ensure transaction semanticsby doing the following:
 2. When the transaction is aborted, we copy the contents from the backup area to the corresponding memory region which ensures that all the changes are reverted back.
 3. When the transaction is commited, we copy the contents of the memory region into th elog files in the format below:
 
+<segname>~<segsize>~<memdump><\n>
+
 Persistence is achieved by recording all the modifications to the disk log-file, which is stored in the same directory as given in rvm_init.
 
 What goes in them? How do the files get cleaned up, so that they do not expand indefinitely?
+
+There are two files stored: the transaction.log, which stores the actual transactions and segments in the format shown, and .seg files in the directory of rvm_init, that contains the raw bytes form memory.
 The RVM Log gets cleaned up in two ways. First, when a segment is mapped, we consume all the modifications from the segment from the log file, and secondly from the explicit call to truncate the log using rvm_truncate_log.
