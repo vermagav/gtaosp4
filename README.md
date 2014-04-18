@@ -5,6 +5,7 @@ Project 4: Recoverable Virtual Memory
 
 
 How to build the library and run tests?
+
 1. Run python build.py
 2. Put all the test(.c) files in the testing directory
 3. Run python test.py
